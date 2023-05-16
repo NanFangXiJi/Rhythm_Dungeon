@@ -28,8 +28,8 @@ def start_process(MainScreen: pygame.Surface):
     Global_Variable.MAIN_ATTACH_LOC[0].append((0, 0))
 
     # 加载空格进入提示
-    press_space_font = pygame.font.Font("font/STXIHEI.TTF", 20)
-    press_space = press_space_font.render("Press Space to Start", True, (255, 255, 255))
+    press_space_font = pygame.font.Font("font/STXIHEI.TTF", 30)
+    press_space = press_space_font.render("Press Space to Start", True, Global_Variable.WHITE)
     press_space_rect = press_space.get_rect()
     press_space_rect.center = (Global_Variable.WINDOW_SIZE[0] / 2,
                                Global_Variable.WINDOW_SIZE[1] - press_space_rect.height)  # 底部居中
@@ -37,11 +37,8 @@ def start_process(MainScreen: pygame.Surface):
     Global_Variable.MAIN_ATTACH[1].append(press_space)
     Global_Variable.MAIN_ATTACH_LOC[1].append(press_space_rect)
 
-    #     生成阶段     #
-    basic_func.generate()
-
-    #     绘制阶段     #
-    basic_func.draw(MainScreen)
+    #     生成与绘制阶段     #
+    basic_func.gene_all_and_draw(MainScreen)
 
     end_of_start_process = False  # 是否结束该阶段的bool值
     while True:

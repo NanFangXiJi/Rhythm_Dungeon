@@ -19,13 +19,23 @@ def init_global_generation():
     Global_Variable.MAIN_ATTACH_LOC = list()
     Global_Variable.MAIN_SURFACE = list()
 
+def gene_all_and_draw(MainScreen: pygame.Surface):
+    """
+    确定所有的图层均可用，并需要立即刷新屏幕以绘制，则使用该函数
+    生成所有图层并绘制的函数
+    :param MainScreen: 主窗口
+    """
+    generate('ALL')
+    draw(MainScreen)
 
 #     画面生成部分     #
 
 # 顶部新建图像层
-def new_layer(layer: list[pygame.Surface], layer_loc: list[pygame.Rect]):
+def new_layer(layer: list[pygame.Surface] = list(), layer_loc: list[pygame.Rect] = list()):
     """
-
+    加载阶段，在顶层新建一层
+    既可传入已经加载结束的层，也可以传入空层以后再加载
+    不写实参则默认为传入空层
     :param layer: 需要新建到顶部的层
     :param layer_loc: 图层对应的位置列表
     """
@@ -36,8 +46,9 @@ def new_layer(layer: list[pygame.Surface], layer_loc: list[pygame.Rect]):
 # 生成对应图层
 def generate(layer_index: int = 'ALL'):
     """
-
-    :param layer_index: 要重生成的图层序号(从0开始数)，默认值-1表示全部重新生成
+    将已经加载好的层生成至全局变量MAIN_SURFACE列表待用
+    可以输入层数选择需要生成的层，也可以选择生成所有层
+    :param layer_index: 要重生成的图层序号(从0开始数)，默认值ALL表示全部重新生成
     """
     if layer_index == 'ALL':
         # 清空生成列表
@@ -71,7 +82,7 @@ def generate(layer_index: int = 'ALL'):
 # 屏幕刷新绘制图像
 def draw(MainScreen: pygame.Surface):
     """
-
+    先重置主画面，然后将存储已经生成好的层的全局变量MAIN_SURFACE逐层绘制到主画面上，并且刷新屏幕
     :param MainScreen: 主窗口
     """
     # 重置主画面

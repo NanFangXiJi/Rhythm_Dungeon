@@ -1,6 +1,8 @@
 """
 用于存储全局变量的文件
 """
+import pygame
+
 
 #     常量区     #
 
@@ -12,9 +14,11 @@ WINDOW_SIZE = (640, 480)
 
 # 常用颜色
 BLACK = (0, 0, 0)
+WHITE = (255,255,255)
 
 # 每个阶段的图层数
 LAYER_START_PROCESS = 2
+LAYER_MENU = 3
 
 #     变量区     #
 
