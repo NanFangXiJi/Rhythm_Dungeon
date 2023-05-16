@@ -54,4 +54,5 @@ def start_process(MainScreen: pygame.Surface):
                     end_of_start_process = True
                     break
         if end_of_start_process:
+            basic_func.init_global_generation()
             break
