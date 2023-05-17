@@ -28,6 +28,18 @@ def gene_all_and_draw(MainScreen: pygame.Surface):
     generate('ALL')
     draw(MainScreen)
 
+# 运算部分
+def calculate_alpha(round: int, this_round: int):
+    """
+    通过二次函数255-x**2/255来返回透明度值，达到闪烁的效果
+    :param round: 每次完整闪烁中修改多少次透明度
+    :param this_round: 这是本次完整闪烁的第几次，从0开始数
+    :return: 返回下一次的透明度
+    """
+    alpha = 255-(-255+(510/round)*this_round)**2/255
+    this_round += 1
+    return alpha
+
 #     画面生成部分     #
 
 # 顶部新建图像层
@@ -68,7 +80,8 @@ def generate(layer_index: int = 'ALL'):
 
     else:
         # 初始化生成层
-        new_surface = pygame.Surface(Global_Variable.WINDOW_SIZE)
+        new_surface = pygame.Surface(Global_Variable.WINDOW_SIZE, pygame.SRCALPHA)
+        new_surface.fill((0, 0, 0, 0))
         for j in range(len(Global_Variable.MAIN_ATTACH[layer_index])):
             # 在生成层上生成
             new_surface.blit(Global_Variable.MAIN_ATTACH[layer_index][j],

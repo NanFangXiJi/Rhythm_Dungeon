@@ -19,13 +19,14 @@ def menu(MainScreen: pygame.Surface):
     #     加载阶段     #
 
     # 加载背景图片
-    bgr = pygame.image.load("img/pictures/menu_bgr.png").convert()
+    bgr = pygame.image.load("img/pictures/menu_bgr2.jpeg").convert()
+    bgr = pygame.transform.scale(bgr, (1280, 1280))
 
     Global_Variable.MAIN_ATTACH[0].append(bgr)
     Global_Variable.MAIN_ATTACH_LOC[0].append((0, 0))
 
     # 加载标题文字
-    title_font = pygame.font.Font("font/GIGI.TTF", 90)
+    title_font = pygame.font.Font("font/GIGI.TTF", 180)
     title = title_font.render("Rhythm Dungeon", True, (255, 128, 128))
     title_rect = title.get_rect()
     title_rect.center = (Global_Variable.WINDOW_SIZE[0] / 2, title_rect.height)

@@ -3,21 +3,20 @@
 """
 import pygame
 
-
 #     常量区     #
 
 # 游戏标题
 GAME_TITLE = 'Rhythm Dungeon'
 
 # 窗口大小
-WINDOW_SIZE = (640, 480)
+WINDOW_SIZE = (1280, 960)
 
 # 常用颜色
 BLACK = (0, 0, 0)
-WHITE = (255,255,255)
+WHITE = (255, 255, 255)
 
 # 每个阶段的图层数
-LAYER_START_PROCESS = 2
+LAYER_START_PROCESS = 3
 LAYER_MENU = 3
 
 #     变量区     #
