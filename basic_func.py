@@ -13,6 +13,18 @@ import Global_Variable
 
 #     基础操作部分     #
 
+# 初始化obj_list
+def init_graphics_of_obj_list():
+    """
+    初始化obj_list，将其绘制方法列表化到Global_Variable.graphics_draw_method_list中
+    """
+    for lst in Global_Variable.obj_rule_list:
+        if lst[3] == 'EMP':
+            Global_Variable.graphics_draw_method_list.append(None)
+        else:
+            Global_Variable.graphics_draw_method_list.append(obj_graphics_calculate(lst[3]))
+
+
 # 初始化全部图层
 def init_global_generation():
     """
@@ -44,6 +56,33 @@ def calculate_alpha(round: int, this_round: int):
     alpha = 255 - (-255 + (510 / round) * this_round) ** 2 / 255
     this_round += 1
     return alpha
+
+
+def obj_graphics_calculate(graphics_msg: str):
+    """
+    这是将从文件中读取的物体绘制方法转换为列表的方法
+    文件中的写法如下：
+        pic1,pic2,|,pic1,pic3,pic4,|,pic6,pic7
+    符号|用来分隔物品每一个状态的图片
+    符号,用来分隔所有意义上“不同的东西”
+    上面的最终会被转化为列表如下：
+        [['pic1','pic2'],['pic1','pic3','pic4'],['pic6','pic7']]
+    :param graphics_msg: 读取的绘制方法
+    :return: 绘制方法列表
+    """
+    graphics_msg_list = graphics_msg.split(',')
+    graphics_list = []
+    temp_list = []
+    for msg in graphics_msg_list:
+        if msg == '|':
+            graphics_list.append(temp_list.copy())
+            temp_list = []
+        else:
+            temp_list.append(msg)
+    if len(temp_list) > 0:
+        graphics_list.append(temp_list)
+    del temp_list
+    return graphics_list
 
 
 #     画面生成部分     #
