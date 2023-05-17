@@ -19,6 +19,12 @@ WHITE = (255, 255, 255)
 LAYER_START_PROCESS = 3
 LAYER_MENU = 3
 
+# obj的定义列表
+obj_rule_list = list()
+
+# obj_rule文件路径
+load_of_obj_rule = "data/obj_rule.xlsx"
+
 #     变量区     #
 
 # 全局图像层数组

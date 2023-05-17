@@ -3,6 +3,9 @@
 """
 
 import sys
+
+import pandas
+import pandas as pd
 import pygame
 
 import Global_Variable
@@ -19,6 +22,7 @@ def init_global_generation():
     Global_Variable.MAIN_ATTACH_LOC = list()
     Global_Variable.MAIN_SURFACE = list()
 
+
 def gene_all_and_draw(MainScreen: pygame.Surface):
     """
     确定所有的图层均可用，并需要立即刷新屏幕以绘制，则使用该函数
@@ -28,6 +32,7 @@ def gene_all_and_draw(MainScreen: pygame.Surface):
     generate('ALL')
     draw(MainScreen)
 
+
 # 运算部分
 def calculate_alpha(round: int, this_round: int):
     """
@@ -36,9 +41,10 @@ def calculate_alpha(round: int, this_round: int):
     :param this_round: 这是本次完整闪烁的第几次，从0开始数
     :return: 返回下一次的透明度
     """
-    alpha = 255-(-255+(510/round)*this_round)**2/255
+    alpha = 255 - (-255 + (510 / round) * this_round) ** 2 / 255
     this_round += 1
     return alpha
+
 
 #     画面生成部分     #
 
@@ -105,3 +111,12 @@ def draw(MainScreen: pygame.Surface):
         MainScreen.blit(Global_Variable.MAIN_SURFACE[i], (0, 0))
     # 刷新画面
     pygame.display.flip()
+
+
+#     文件处理 读     #
+def read_obj_rule():
+    """
+    实现初始化物体列表的读取，在最开始处进行
+    """
+    obj_rule_file = pandas.read_excel(Global_Variable.load_of_obj_rule)
+    Global_Variable.obj_rule_list = obj_rule_file.values.tolist()

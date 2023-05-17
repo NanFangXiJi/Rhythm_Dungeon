@@ -27,7 +27,7 @@ def menu(MainScreen: pygame.Surface):
 
     # 加载标题文字
     title_font = pygame.font.Font("font/GIGI.TTF", 180)
-    title = title_font.render("Rhythm Dungeon", True, (255, 128, 128))
+    title = title_font.render(Global_Variable.GAME_TITLE, True, (255, 128, 128))
     title_rect = title.get_rect()
     title_rect.center = (Global_Variable.WINDOW_SIZE[0] / 2, title_rect.height)
 
