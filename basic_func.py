@@ -5,7 +5,7 @@
 import sys
 
 import pandas
-import pandas as pd
+
 import pygame
 
 import Global_Variable
