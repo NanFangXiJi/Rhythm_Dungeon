@@ -18,6 +18,7 @@ WHITE = (255, 255, 255)
 # 每个阶段的图层数
 LAYER_START_PROCESS = 3
 LAYER_MENU = 3
+LAYER_LEVEL = 3
 
 # obj的定义列表
 obj_rule_list = list()
