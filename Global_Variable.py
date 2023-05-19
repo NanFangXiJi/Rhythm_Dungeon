@@ -26,6 +26,12 @@ obj_rule_list = list()
 # obj_rule文件路径
 load_of_obj_rule = "data/obj_rule.xlsx"
 
+# 绘制方法列表
+graphics_draw_method_list = []
+
+# 绘制方法对应图片路径字典
+graphics_draw_method_dict = {}
+
 #     变量区     #
 
 # 全局图像层数组

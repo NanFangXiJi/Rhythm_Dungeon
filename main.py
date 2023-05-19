@@ -9,7 +9,8 @@ import basic_func
 
 # 初始化
 pygame.init()
-basic_func.read_obj_rule()  # 物品规则列表初始化
+basic_func.read_obj_rule()  # 物体规则列表初始化
+basic_func.init_graphics_of_obj_list()  # 物体绘制列表初始化
 
 # 开启主窗口
 MainScreen = pygame.display.set_mode(Global_Variable.WINDOW_SIZE)
