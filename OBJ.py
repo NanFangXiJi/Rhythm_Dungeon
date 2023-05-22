@@ -1,4 +1,5 @@
 import pygame
+from typing import Optional, List
 
 import Global_Variable
 import basic_func
@@ -10,7 +11,7 @@ class obj:
     destroy_level: int  # 物体的摧毁等级
     layer_for_obj: int  # 物体的地图层内所属层
     size: tuple[int, int]  # 物体的贴图大小
-    graphics: list[pygame.Surface] | None  # 物品的贴图列表
+    graphics: Optional[List[pygame.Surface]] = None  # 物品的贴图列表  # 物品的贴图列表
 
     def __init__(self, obj_id: int):
         """

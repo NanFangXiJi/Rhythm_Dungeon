@@ -1,4 +1,5 @@
 import pygame.mixer
+from typing import Union
 
 import Square
 
@@ -12,7 +13,7 @@ class maps:
     map_Square: list[list[Square.Square]]  # 一个二维数组，维护地图所有的方格，位置表示为几行几列
 
     map_music_load: str  # 地图对应音乐的路径
-    map_music_BPM: int | float  # 地图对应音乐的BPM速度
+    map_music_BPM: Union[int, float]  # 地图对应音乐的BPM速度
 
     def __init__(self, index: int):
         """

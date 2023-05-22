@@ -37,9 +37,30 @@ def menu(MainScreen: pygame.Surface):
     Global_Variable.MAIN_ATTACH[1].append(title)
     Global_Variable.MAIN_ATTACH_LOC[1].append(title_rect)
 
+    # 加载选择按钮
+    option_font = pygame.font.Font("font/GIGI.TTF", 80)
+    option1_text = option_font.render(">Enter game", True, (255, 255, 255))
+    option1_rect = option1_text.get_rect()
+    option1_rect.center = (Global_Variable.WINDOW_SIZE[0] / 2, 600)
+
+    option2_text = option_font.render(">Quit game", True, (255, 255, 255))
+    option2_rect = option2_text.get_rect()
+    option2_rect.center = (Global_Variable.WINDOW_SIZE[0] / 2, 800)
+
+    Global_Variable.MAIN_ATTACH[2].append(option1_text)
+    Global_Variable.MAIN_ATTACH_LOC[2].append(option1_rect)
+    Global_Variable.MAIN_ATTACH[2].append(option2_text)
+    Global_Variable.MAIN_ATTACH_LOC[2].append(option2_rect)
+
+
+
+
+
     #     生成与绘制阶段    #
 
     basic_func.gene_all_and_draw(MainScreen)
+
+    selected_option = 0  # 当前选中的选择支
 
     end_of_menu = False  # 是否结束该阶段的bool值
     while True:
@@ -49,8 +70,24 @@ def menu(MainScreen: pygame.Surface):
                 sys.exit()
             elif event.type == pygame.KEYDOWN and not end_of_menu:
                 if event.key == pygame.K_SPACE:
-                    end_of_menu = True
-                    break
+                    if selected_option == 0:  # 进入游戏
+                        end_of_menu = True
+                        break
+                    elif selected_option == 1:  # 退出游戏
+                        pygame.quit()
+                        sys.exit()
+                elif event.key == pygame.K_UP:
+                    selected_option = (selected_option - 1) % 2
+                elif event.key == pygame.K_DOWN:
+                    selected_option = (selected_option + 1) % 2
+
+        # 让当前选项闪烁
+        for i, option in enumerate(Global_Variable.MAIN_ATTACH[2]):
+            option.set_alpha(255 if i == selected_option else 128)
+
+        # 生成与绘制阶段
+        basic_func.gene_all_and_draw(MainScreen)
+
         if end_of_menu:
             break
 

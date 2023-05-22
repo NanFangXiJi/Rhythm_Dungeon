@@ -19,8 +19,8 @@ def start_process(MainScreen: pygame.Surface):
     #     初始化阶段     #
 
     # 初始化该阶段的所有图层
-    for i in range(Global_Variable.LAYER_START_PROCESS):
-        basic_func.new_layer(list(), list())
+    for i in range(Global_Variable.LAYER_START_PROCESS):  # 此处全局设为两层
+        basic_func.new_layer(list(), list())              #
 
     # 初始化计时器
     start_process_clock = pygame.time.Clock()

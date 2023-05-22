@@ -134,7 +134,7 @@ def new_layer(layer: list[pygame.Surface] = list(), layer_loc: list[pygame.Rect]
 
 
 # 生成对应图层
-def generate(layer_index: int | str = 'ALL'):
+def generate(layer_index: Union[int, str] = 'ALL'):
     """
     将已经加载好的层生成至全局变量MAIN_SURFACE列表待用
     可以输入层数选择需要生成的层，也可以选择生成所有层
