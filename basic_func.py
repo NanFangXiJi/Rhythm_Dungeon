@@ -3,26 +3,23 @@
 """
 
 import sys
-
+from typing import Union
 import pandas
-
 import pygame
 
 import Global_Variable
+import OBJ
 
 
 #     基础操作部分     #
 
 # 初始化obj_list
-def init_graphics_of_obj_list():
+def init_obj_list():
     """
-    初始化obj_list，将其绘制方法列表化到Global_Variable.graphics_draw_method_list中
+    初始化obj_list，加载所有的obj并储存在obj_list中
     """
-    for lst in Global_Variable.obj_rule_list:
-        if lst[3] == 'EMP':
-            Global_Variable.graphics_draw_method_list.append(None)
-        else:
-            Global_Variable.graphics_draw_method_list.append(obj_graphics_calculate(lst[3]))
+    for i in range(len(Global_Variable.obj_rule_list)):
+        Global_Variable.obj_list.append(OBJ.obj(i))
 
 
 # 初始化全部图层
@@ -35,6 +32,7 @@ def init_global_generation():
     Global_Variable.MAIN_SURFACE = list()
 
 
+# 全部生成并绘制
 def gene_all_and_draw(MainScreen: pygame.Surface):
     """
     确定所有的图层均可用，并需要立即刷新屏幕以绘制，则使用该函数
@@ -45,7 +43,27 @@ def gene_all_and_draw(MainScreen: pygame.Surface):
     draw(MainScreen)
 
 
-# 运算部分
+def gene_all_and_draw_for_map(MainScreen: pygame.Surface):
+    """
+    为Map放大而特殊创造的函数
+    :param MainScreen: 主窗口
+    """
+    generate('ALL')
+    rect = Global_Variable.MAIN_SURFACE[1].get_rect()
+    Global_Variable.MAIN_SURFACE[1] = pygame.transform.scale(Global_Variable.MAIN_SURFACE[1],
+                                                             (rect.width * 2, rect.height * 2))
+    draw(MainScreen)
+
+
+def get_empty_surface(dest: tuple[int, int]):
+    new_surface = pygame.Surface(dest, pygame.SRCALPHA)
+    new_surface.fill((0, 0, 0, 0))
+    return new_surface
+
+
+#     运算部分     #
+
+# 计算闪烁透明度
 def calculate_alpha(round: int, this_round: int):
     """
     通过二次函数255-x**2/255来返回透明度值，达到闪烁的效果
@@ -58,6 +76,7 @@ def calculate_alpha(round: int, this_round: int):
     return alpha
 
 
+# 获取物品绘制方法
 def obj_graphics_calculate(graphics_msg: str):
     """
     这是将从文件中读取的物体绘制方法转换为列表的方法
@@ -85,6 +104,20 @@ def obj_graphics_calculate(graphics_msg: str):
     return graphics_list
 
 
+#     画面加载部分     #
+
+# 将surface变为标准大小
+def sur_to_standard_square_size(sur: pygame.Surface):
+    """
+    将读取文件后绘制的surface变为标准方格大小50x50，直接作用在surface上
+    似乎并不起作用，因此禁用，建议是直接获得正确大小的surface
+    :param sur: 需要改变的surface
+    """
+    size = sur.get_size()
+    if size != (50, 50):
+        pygame.transform.scale(sur, (50, 50))
+
+
 #     画面生成部分     #
 
 # 顶部新建图像层
@@ -101,7 +134,7 @@ def new_layer(layer: list[pygame.Surface] = list(), layer_loc: list[pygame.Rect]
 
 
 # 生成对应图层
-def generate(layer_index: int = 'ALL'):
+def generate(layer_index: int | str = 'ALL'):
     """
     将已经加载好的层生成至全局变量MAIN_SURFACE列表待用
     可以输入层数选择需要生成的层，也可以选择生成所有层
@@ -112,27 +145,37 @@ def generate(layer_index: int = 'ALL'):
         Global_Variable.MAIN_SURFACE.clear()
 
         # 逐层、逐个生成
-        for i in range(len(Global_Variable.MAIN_ATTACH)):
-            # 初始化生成层：全透明
-            new_surface = pygame.Surface(Global_Variable.WINDOW_SIZE, pygame.SRCALPHA)
-            new_surface.fill((0, 0, 0, 0))
-            for j in range(len(Global_Variable.MAIN_ATTACH[i])):
-                # 在生成层上生成
-                new_surface.blit(Global_Variable.MAIN_ATTACH[i][j],
-                                 Global_Variable.MAIN_ATTACH_LOC[i][j])
-            # 将生成结束的层加入生成列表
-            Global_Variable.MAIN_SURFACE.append(new_surface)
-
+        if len(Global_Variable.MAIN_ATTACH) > 0:
+            for i in range(len(Global_Variable.MAIN_ATTACH)):
+                # 初始化生成层：全透明
+                new_surface = pygame.Surface(Global_Variable.WINDOW_SIZE, pygame.SRCALPHA)
+                new_surface.fill((0, 0, 0, 0))
+                if len(Global_Variable.MAIN_ATTACH[i]) > 0:
+                    for j in range(len(Global_Variable.MAIN_ATTACH[i])):
+                        # 在生成层上生成
+                        new_surface.blit(Global_Variable.MAIN_ATTACH[i][j],
+                                         Global_Variable.MAIN_ATTACH_LOC[i][j])
+                # 将生成结束的层加入生成列表
+                Global_Variable.MAIN_SURFACE.append(new_surface)
     else:
         # 初始化生成层
         new_surface = pygame.Surface(Global_Variable.WINDOW_SIZE, pygame.SRCALPHA)
         new_surface.fill((0, 0, 0, 0))
-        for j in range(len(Global_Variable.MAIN_ATTACH[layer_index])):
-            # 在生成层上生成
-            new_surface.blit(Global_Variable.MAIN_ATTACH[layer_index][j],
-                             Global_Variable.MAIN_ATTACH_LOC[layer_index][j])
+        if len(Global_Variable.MAIN_ATTACH[layer_index]) > 0:
+            for j in range(len(Global_Variable.MAIN_ATTACH[layer_index])):
+                # 在生成层上生成
+                new_surface.blit(Global_Variable.MAIN_ATTACH[layer_index][j],
+                                 Global_Variable.MAIN_ATTACH_LOC[layer_index][j])
         # 将生成结束的层替代原有层加入生成列表
         Global_Variable.MAIN_SURFACE[layer_index] = new_surface
+
+
+def generate_for_map(layer_index: int):
+    generate(layer_index)
+    if layer_index == 1:
+        rect = Global_Variable.MAIN_SURFACE[1].get_rect()
+        Global_Variable.MAIN_SURFACE[1] = pygame.transform.scale(Global_Variable.MAIN_SURFACE[1],
+                                                                 (rect.width * 2, rect.height * 2))
 
 
 #     画面绘制部分     #

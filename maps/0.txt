@@ -1,0 +1,1 @@
+0,testmap,100,100,Vitality.wav,150
