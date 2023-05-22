@@ -18,19 +18,23 @@ WHITE = (255, 255, 255)
 # 每个阶段的图层数
 LAYER_START_PROCESS = 3
 LAYER_MENU = 3
-LAYER_LEVEL = 3
+LAYER_ToMAP = 6
 
-# obj的定义列表
-obj_rule_list = list()
+# 游戏地图总数
+MAP_NUM = 1
 
 # obj_rule文件路径
 load_of_obj_rule = "data/obj_rule.xlsx"
 
+# obj的定义列表
+obj_rule_list = list()
+
 # 绘制方法列表
 graphics_draw_method_list = []
 
-# 绘制方法对应图片路径字典
-graphics_draw_method_dict = {}
+# 储存全体obj的列表
+obj_list = list()
+
 
 #     变量区     #
 
@@ -42,3 +46,9 @@ MAIN_ATTACH_LOC = list()
 
 # 全局实际图层Surface
 MAIN_SURFACE = list()
+
+# 下一个界面
+NEXT_PAGE = int()
+
+# 下一个地图
+NEXT_MAP = int()

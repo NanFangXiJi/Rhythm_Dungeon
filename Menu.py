@@ -4,6 +4,7 @@ import pygame
 import Global_Variable
 import basic_func
 
+
 def menu(MainScreen: pygame.Surface):
     """
     menu阶段的层：
@@ -12,6 +13,8 @@ def menu(MainScreen: pygame.Surface):
         2层：选择支
     :param MainScreen: 主窗口
     """
+    #     初始化阶段     #
+
     # 初始化该阶段的所有图层
     for i in range(Global_Variable.LAYER_MENU):
         basic_func.new_layer(list(), list())
@@ -44,3 +47,16 @@ def menu(MainScreen: pygame.Surface):
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+            elif event.type == pygame.KEYDOWN and not end_of_menu:
+                if event.key == pygame.K_SPACE:
+                    end_of_menu = True
+                    break
+        if end_of_menu:
+            break
+
+    pygame.time.delay(100)
+    # 初始化生成
+    basic_func.init_global_generation()
+    # 设置下一个页面
+    Global_Variable.NEXT_PAGE = 2
+    Global_Variable.NEXT_MAP = 0

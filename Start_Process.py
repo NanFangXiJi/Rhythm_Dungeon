@@ -16,6 +16,8 @@ def start_process(MainScreen: pygame.Surface):
         2层：黑色遮罩
     :param MainScreen: 主窗口
     """
+    #     初始化阶段     #
+
     # 初始化该阶段的所有图层
     for i in range(Global_Variable.LAYER_START_PROCESS):
         basic_func.new_layer(list(), list())
@@ -70,8 +72,6 @@ def start_process(MainScreen: pygame.Surface):
                     end_of_start_process = True
                     break
         if end_of_start_process:
-            pygame.time.delay(100)
-            basic_func.init_global_generation()
             break
 
         # 时间操作
@@ -93,3 +93,8 @@ def start_process(MainScreen: pygame.Surface):
             basic_func.generate(1)
 
         basic_func.draw(MainScreen)
+    pygame.time.delay(100)
+    # 初始化生成
+    basic_func.init_global_generation()
+    # 设置下一个页面
+    Global_Variable.NEXT_PAGE = 1
