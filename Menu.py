@@ -21,12 +21,22 @@ def menu(MainScreen: pygame.Surface):
 
     #     加载阶段     #
 
+    # 初始化计时器
+    menu_clock = pygame.time.Clock()
+    timer_for_mask = 0
+    timer_for_press_space = 0
+
     # 加载背景图片
     bgr = pygame.image.load("img/pictures/menu_bgr2.jpeg").convert()
     bgr = pygame.transform.scale(bgr, (1280, 1280))
 
     Global_Variable.MAIN_ATTACH[0].append(bgr)
     Global_Variable.MAIN_ATTACH_LOC[0].append((0, 0))
+
+    # 加载黑色遮罩
+    mask = pygame.Surface(Global_Variable.WINDOW_SIZE, pygame.HWSURFACE | pygame.SRCALPHA)
+    mask.fill(Global_Variable.BLACK)
+    mask.set_alpha(255)
 
     # 加载标题文字
     title_font = pygame.font.Font("font/GIGI.TTF", 180)
@@ -52,6 +62,7 @@ def menu(MainScreen: pygame.Surface):
     Global_Variable.MAIN_ATTACH[2].append(option2_text)
     Global_Variable.MAIN_ATTACH_LOC[2].append(option2_rect)
 
+    option_round = 0
 
 
 
@@ -77,14 +88,59 @@ def menu(MainScreen: pygame.Surface):
                         pygame.quit()
                         sys.exit()
                 elif event.key == pygame.K_UP:
+                    if selected_option == 0:
+                        option1_text.set_alpha(255)
+                    elif selected_option == 1:
+                        option2_text.set_alpha(255)
                     selected_option = (selected_option - 1) % 2
                 elif event.key == pygame.K_DOWN:
+                    if selected_option == 0:
+                        option1_text.set_alpha(255)
+                    elif selected_option == 1:
+                        option2_text.set_alpha(255)
                     selected_option = (selected_option + 1) % 2
 
         # 让当前选项闪烁
-        for i, option in enumerate(Global_Variable.MAIN_ATTACH[2]):
-            option.set_alpha(255 if i == selected_option else 128)
+        if selected_option == 0:
+            # 时间操作
+            menu_clock.tick()
 
+            if mask.get_alpha() > 0:
+                timer_for_mask += menu_clock.get_time()
+
+            timer_for_press_space += menu_clock.get_time()
+
+            if timer_for_mask >= 10 and mask.get_alpha() != 0:
+                mask.set_alpha(max(mask.get_alpha() - 10, 0))
+                timer_for_mask = 0
+                basic_func.generate(2)
+
+            if timer_for_press_space >= 20:
+                option1_text.set_alpha(basic_func.calculate_alpha(100, option_round % 100))
+                timer_for_press_space = 0
+                option_round += 1
+                basic_func.generate(1)
+
+
+        elif selected_option == 1:
+            # 时间操作
+            menu_clock.tick()
+
+            if mask.get_alpha() > 0:
+                timer_for_mask += menu_clock.get_time()
+
+            timer_for_press_space += menu_clock.get_time()
+
+            if timer_for_mask >= 10 and mask.get_alpha() != 0:
+                mask.set_alpha(max(mask.get_alpha() - 10, 0))
+                timer_for_mask = 0
+                basic_func.generate(2)
+
+            if timer_for_press_space >= 20:
+                option2_text.set_alpha(basic_func.calculate_alpha(100, option_round % 100))
+                timer_for_press_space = 0
+                option_round += 1
+                basic_func.generate(1)
         # 生成与绘制阶段
         basic_func.gene_all_and_draw(MainScreen)
 
