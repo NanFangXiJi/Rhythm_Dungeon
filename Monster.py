@@ -1,3 +1,5 @@
+import pygame.image
+
 import Creature
 import Global_Variable
 
@@ -16,12 +18,28 @@ class Monster(Creature.Creature):
         self.mon_id = mon_id
         self.mon_name = Global_Variable.monster_rule_list[mon_id][1]
         self.act_mode = Global_Variable.monster_rule_list[mon_id][2]
+        self.max_blood = Global_Variable.monster_rule_list[mon_id][3]
+        self.attack = Global_Variable.monster_rule_list[mon_id][18]
 
         # 转化字符串为列表
         str_act_loop = Global_Variable.monster_rule_list[mon_id][5]
         self.act_loop = [int(i) for i in str_act_loop.split(',')]
 
+        # 读取绘制方法字符串，并load
+        cmt_img_list = 0
+        img_filename_list = list()
+        for i in range(6,18):
+            img_filename_list.append(Global_Variable.monster_rule_list[mon_id][i])
+        for filename in img_filename_list:
+            img_path = f"img/character/{filename}.png"
+            img = pygame.image.load(img_path)
+            self.img_list[cmt_img_list].append(pygame.image.load(img))
+            if cmt_img_list == 2:
+                cmt_img_list = 0  # img_list中二维列表储存
+            cmt_img_list += 1
+
         self.act_loop_len = len(self.act_loop)
+
 
     def copy_base_in_list(self, init_loc: list[int, int], direction: int = 1, status: int = 1):
         """
