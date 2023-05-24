@@ -1,6 +1,7 @@
 import pygame.mixer
 from typing import Union
 
+import Global_Variable
 import Square
 import Creature
 
@@ -36,6 +37,7 @@ class maps:
         self.map_Creature = set()
         # 读文件
         map_file_list = self.read_map_file()
+        monster_file_list = self.read_map_monster_file()
         # 初始化地图名、地图大小、地图方格、地图音乐路径、地图音乐对应BPM等
         map_message_list = map_file_list[0].split(',')
         self.map_size = (eval(map_message_list[2]), eval(map_message_list[3]))
@@ -54,6 +56,16 @@ class maps:
         self.map_music_BPM = eval(map_message_list[5])
         self.map_music_fin = eval(map_message_list[8])
         self.beat_long = 60 * 1000 / self.map_music_BPM
+        del temp_list
+
+        # 创建monster并将其存入map_Creature
+        temp_list = self.prepare_monster_file(monster_file_list)
+        for mon_data in temp_list:
+            mon = Global_Variable.monster_list[eval(mon_data[0])].copy_base_in_list([eval(mon_data[1]),
+                                                                                     eval(mon_data[2])])
+            mon.base = False
+            self.map_Creature.add(mon)
+        del temp_list
 
     def read_map_file(self):
         """
@@ -61,6 +73,14 @@ class maps:
         :return: 返回读取到的字符串
         """
         with open('maps/' + str(self.map_index) + '.txt', 'r', encoding='utf-8') as f:
+            return f.readlines()
+
+    def read_map_monster_file(self):
+        """
+        读取地图怪物文件的信息
+        :return: 返回读取到的字符串
+        """
+        with open('maps/' + str(self.map_index) + '_m.txt', 'r', encoding='utf-8') as f:
             return f.readlines()
 
     def get_creature_loc_set(self):
@@ -81,6 +101,10 @@ class maps:
 
     def prepare_map_file(self, map_file_list: list[str]):
         new_list = [sr.split(';') for sr in map_file_list]
+        return new_list
+
+    def prepare_monster_file(self, monster_file_list: list[str]):
+        new_list = [sr.split(',') for sr in monster_file_list]
         return new_list
 
     def is_on_beat(self, timer: int):

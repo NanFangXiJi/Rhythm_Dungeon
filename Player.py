@@ -1,13 +1,12 @@
 import pygame.image
 
 import Creature
+import Global_Variable
+
 
 class Player(Creature.Creature):
     def __init__(self, init_loc: list[int, int], direction: int = 1, status: int = 1):
         """
-
-        未完成
-
         :param init_loc: 地图需要给出的初始位置
         """
         super().__init__()
@@ -28,6 +27,9 @@ class Player(Creature.Creature):
         self.flush_and_get_creature_rect()
         self.direction = direction
         self.status = status
+        self.attack = Global_Variable.init_attack_of_player
+        self.max_blood = Global_Variable.init_max_blood_of_player
+        self.blood = self.max_blood
 
     def flush_status(self, direction, status):
         self.direction = direction
