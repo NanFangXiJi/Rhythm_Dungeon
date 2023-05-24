@@ -9,11 +9,21 @@ import pygame
 
 import Global_Variable
 import OBJ
+import Monster
 import Maps
 import Creature
 
 
 #     基础操作部分     #
+
+# 初始化mon_list
+def init_mon_list():
+    """
+    初始化mon_list，加载所有的mon并储存在mon_list中
+    """
+    for i in range(len(Global_Variable.mon_rule_list)):
+        Global_Variable.mon_list.append(Monster.Monster(i))
+
 
 # 初始化obj_list
 def init_obj_list():

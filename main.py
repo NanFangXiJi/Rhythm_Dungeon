@@ -18,6 +18,8 @@ basic_func.init_obj_list()  # 物体列表初始化
 del Global_Variable.obj_rule_list  # 物体初始化完毕后删除物体规则列表释放内存
 
 basic_func.read_monster_rule()  # 怪物规则列表初始化
+basic_func.init_mon_list()      # 怪物列表初始化
+del Global_Variable.monster_rule_list  # 怪物初始化完毕后删除怪物规则列表释放内存
 
 
 Global_Variable.music_channel = [pygame.mixer.Channel(i) for i in range(Global_Variable.CHANNEL)]  # 创建音频通道
