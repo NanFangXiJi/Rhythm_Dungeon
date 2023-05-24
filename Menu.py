@@ -64,15 +64,15 @@ def menu(MainScreen: pygame.Surface):
 
     option_round = 0
 
-
-
-
     #     生成与绘制阶段    #
 
     basic_func.gene_all_and_draw(MainScreen)
 
-    selected_option = 0  # 当前选中的选择支
+    # 播放背景音乐
+    mus = pygame.mixer.Sound("music/Sequel Blight.wav")
+    Global_Variable.music_channel[0].play(mus, loops=-1)
 
+    selected_option = 0  # 当前选中的选择支
     end_of_menu = False  # 是否结束该阶段的bool值
     while True:
         for event in pygame.event.get():
@@ -120,8 +120,6 @@ def menu(MainScreen: pygame.Surface):
                 timer_for_press_space = 0
                 option_round += 1
                 basic_func.generate(1)
-
-
         elif selected_option == 1:
             # 时间操作
             menu_clock.tick()
@@ -141,6 +139,7 @@ def menu(MainScreen: pygame.Surface):
                 timer_for_press_space = 0
                 option_round += 1
                 basic_func.generate(1)
+
         # 生成与绘制阶段
         basic_func.gene_all_and_draw(MainScreen)
 
@@ -148,6 +147,7 @@ def menu(MainScreen: pygame.Surface):
             break
 
     pygame.time.delay(100)
+    Global_Variable.music_channel[0].stop()
     # 初始化生成
     basic_func.init_global_generation()
     # 设置下一个页面

@@ -9,6 +9,8 @@ import pygame
 
 import Global_Variable
 import OBJ
+import Maps
+import Creature
 
 
 #     基础操作部分     #
@@ -33,14 +35,15 @@ def init_global_generation():
 
 
 # 全部生成并绘制
-def gene_all_and_draw(MainScreen: pygame.Surface):
+def gene_all_and_draw(MainScreen: pygame.Surface, dest: tuple[int, int] = (0, 0)):
     """
     确定所有的图层均可用，并需要立即刷新屏幕以绘制，则使用该函数
     生成所有图层并绘制的函数
     :param MainScreen: 主窗口
+    :param dest: 位置，其实是给to_map留的后门，方便改换位置
     """
     generate('ALL')
-    draw(MainScreen)
+    draw(MainScreen, dest)
 
 
 def gene_all_and_draw_for_map(MainScreen: pygame.Surface):
@@ -62,6 +65,25 @@ def get_empty_surface(dest: tuple[int, int]):
 
 
 #     运算部分     #
+
+# 判断行动是否能够进行
+def is_it_accessible(the_map: Maps.maps, creature: Creature.Creature, direction: int):
+    """
+    判断能不能进行行动
+    :param the_map: 地图本身
+    :param creature: 行动生物
+    :param direction: 行动方向
+    :return: bool量
+    """
+    cre_loc = creature.loc
+    if direction == 0:
+        return the_map.map_Square[cre_loc[0] - 1][cre_loc[1]].obj_on.accessible == 1
+    elif direction == 1:
+        return the_map.map_Square[cre_loc[0] + 1][cre_loc[1]].obj_on.accessible == 1
+    elif direction == 2:
+        return the_map.map_Square[cre_loc[0]][cre_loc[1] - 1].obj_on.accessible == 1
+    elif direction == 3:
+        return the_map.map_Square[cre_loc[0]][cre_loc[1] + 1].obj_on.accessible == 1
 
 # 计算闪烁透明度
 def calculate_alpha(round: int, this_round: int):
@@ -181,16 +203,20 @@ def generate_for_map(layer_index: int):
 #     画面绘制部分     #
 
 # 屏幕刷新绘制图像
-def draw(MainScreen: pygame.Surface):
+def draw(MainScreen: pygame.Surface, dest: tuple[int, int] = (0, 0)):
     """
     先重置主画面，然后将存储已经生成好的层的全局变量MAIN_SURFACE逐层绘制到主画面上，并且刷新屏幕
     :param MainScreen: 主窗口
+    :param dest: 位置，其实是给to_map留的后门，方便改换位置
     """
     # 重置主画面
     MainScreen.fill(Global_Variable.BLACK)
     # 将最终图像生成至主画面上
     for i in range(len(Global_Variable.MAIN_SURFACE)):
-        MainScreen.blit(Global_Variable.MAIN_SURFACE[i], (0, 0))
+        if i == 1:
+            MainScreen.blit(Global_Variable.MAIN_SURFACE[i], dest)
+        else:
+            MainScreen.blit(Global_Variable.MAIN_SURFACE[i], (0, 0))
     # 刷新画面
     pygame.display.flip()
 
