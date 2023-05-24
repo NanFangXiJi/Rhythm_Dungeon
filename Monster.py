@@ -26,9 +26,10 @@ class Monster(Creature.Creature):
         self.act_loop = [int(i) for i in str_act_loop.split(',')]
 
         # 读取绘制方法字符串，并load
+        self.img_list = list()
         cmt_img_list = 0
         img_filename_list = list()
-        for i in range(6,18):
+        for i in range(6, 18):
             img_filename_list.append(Global_Variable.monster_rule_list[mon_id][i])
         for filename in img_filename_list:
             img_path = f"img/character/{filename}.png"
@@ -39,7 +40,6 @@ class Monster(Creature.Creature):
             cmt_img_list += 1
 
         self.act_loop_len = len(self.act_loop)
-
 
     def copy_base_in_list(self, init_loc: list[int, int], direction: int = 1, status: int = 1):
         """

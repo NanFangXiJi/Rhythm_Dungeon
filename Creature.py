@@ -1,7 +1,5 @@
 import pygame
 
-import Maps
-
 
 class Creature(pygame.sprite.Sprite):
     """
@@ -11,6 +9,7 @@ class Creature(pygame.sprite.Sprite):
     is_moving: bool  # 判断自身是否正在移动
     max_blood: int  # 最大血量
     blood: int  # 现有血量
+    living: bool  # 是否活着
     attack: int  # 攻击力
     creature_rect: pygame.rect.Rect  # 生物的rect
     direction: int  # 面朝方向，0上，1下，2左，3右
@@ -18,6 +17,7 @@ class Creature(pygame.sprite.Sprite):
     img_list: list[list[pygame.Surface]]
 
     def __init__(self):
+        self.living = True
         pass
 
     def load_img(self, load: str):
@@ -134,12 +134,11 @@ class Creature(pygame.sprite.Sprite):
     def blood_turn_max(self):
         self.blood = self.max_blood
 
-    def die(self, the_map: Maps.maps):
+    def die(self):
         self.blood = 0
-        the_map.map_Creature.pop(self)
         pass
 
-    def been_attacked(self, creature: 'Creature', the_map: Maps.maps):
+    def been_attacked(self, creature: 'Creature',):
         """
         被攻击处理
         :param creature: 施加攻击的生物
@@ -147,7 +146,7 @@ class Creature(pygame.sprite.Sprite):
         """
         self.blood -= creature.attack
         if self.blood <= 0:
-            self.die(the_map)
+            self.die()
 
     def do_attack(self, creature: 'Creature'):
         """
