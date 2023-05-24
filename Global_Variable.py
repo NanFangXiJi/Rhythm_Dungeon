@@ -3,6 +3,8 @@
 """
 import pygame
 
+import OBJ
+
 #     常量区     #
 
 # 游戏标题
@@ -33,7 +35,13 @@ obj_rule_list = list()
 graphics_draw_method_list = []
 
 # 储存全体obj的列表
-obj_list = list()
+obj_list: list[OBJ.obj] = list()
+
+# 音频通道个数
+CHANNEL = 2
+
+# 全局音频通道
+music_channel: list[pygame.Channel] = list()
 
 
 #     变量区     #
