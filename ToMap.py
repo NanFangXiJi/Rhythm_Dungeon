@@ -5,6 +5,7 @@ import Player
 import basic_func
 import Global_Variable
 import Maps
+import Round_Controller as RC
 
 
 def ToMap(MainScreen: pygame.Surface, map_index: int = Global_Variable.NEXT_MAP):
@@ -68,26 +69,36 @@ def ToMap(MainScreen: pygame.Surface, map_index: int = Global_Variable.NEXT_MAP)
 
     # 初始化计时器
     map_clock = pygame.time.Clock()
-    game_time = 0
 
-    end_of_map = False  # 是否结束
-    on_beat = False  # 是否在拍子上
+    # 初始化轮控制器
+    """
+    轮控制器数据：
+        0：轮次
+        1：game_time游戏总时间
+        2：on_beat是否在拍子上
+        3.end_of_map是否结束
+    """
+    ToMap_RC = RC.Round_Controller(0, 0, False, False)
+
 
     while True:
+        # RC轮初始操作
+        ToMap_RC.round_init()
+
         # 时间操作
         map_clock.tick()
         round_time = map_clock.get_time()
-        game_time += round_time
+        ToMap_RC.outside_data_list[1] += round_time
 
         # 判断是否在拍子上
-        on_beat = the_map.is_on_beat(game_time + the_map.map_music_fin)
+        ToMap_RC.outside_data_list[2] = the_map.is_on_beat(ToMap_RC.outside_data_list[1] + the_map.map_music_fin)
 
         # 按键操作
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            elif event.type == pygame.KEYDOWN and not end_of_map and on_beat:
+            elif event.type == pygame.KEYDOWN and not ToMap_RC.outside_data_list[3] and ToMap_RC.outside_data_list[2]:
                 if event.key == pygame.K_DOWN:
                     if basic_func.is_it_accessible(the_map, the_player, 1):
                         the_player.move_down()
@@ -128,3 +139,6 @@ def ToMap(MainScreen: pygame.Surface, map_index: int = Global_Variable.NEXT_MAP)
         rect_of_map.left = Global_Variable.WINDOW_SIZE[0] / 2 - the_player.creature_rect.left
         rect_of_map.top = Global_Variable.WINDOW_SIZE[1] / 2 - the_player.creature_rect.top
         basic_func.gene_all_and_draw(MainScreen, rect_of_map)
+
+        # 更新RC
+        ToMap_RC.update_data()
