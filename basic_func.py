@@ -21,8 +21,8 @@ def init_mon_list():
     """
     初始化mon_list，加载所有的mon并储存在mon_list中
     """
-    for i in range(len(Global_Variable.mon_rule_list)):
-        Global_Variable.mon_list.append(Monster.Monster(i))
+    for i in range(len(Global_Variable.monster_rule_list)):
+        Global_Variable.monster_rule_list.append(Monster.Monster(i))
 
 
 # 初始化obj_list
@@ -97,15 +97,15 @@ def is_it_accessible(the_map: Maps.maps, creature: Creature.Creature, direction:
 
 
 # 计算闪烁透明度
-def calculate_alpha(round: int, this_round: int):
+def calculate_alpha(rd: int, this_rd: int):
     """
     通过二次函数255-x**2/255来返回透明度值，达到闪烁的效果
-    :param round: 每次完整闪烁中修改多少次透明度
-    :param this_round: 这是本次完整闪烁的第几次，从0开始数
+    :param rd: 每次完整闪烁中修改多少次透明度
+    :param this_rd: 这是本次完整闪烁的第几次，从0开始数
     :return: 返回下一次的透明度
     """
-    alpha = 255 - (-255 + (510 / round) * this_round) ** 2 / 255
-    this_round += 1
+    alpha = 255 - (-255 + (510 / rd) * this_rd) ** 2 / 255
+    this_rd += 1
     return alpha
 
 
