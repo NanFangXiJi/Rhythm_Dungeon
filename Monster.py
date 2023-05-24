@@ -75,3 +75,4 @@ class Monster(Creature.Creature):
             self.act_stage += 1
         else:
             self.act_stage = 0
+

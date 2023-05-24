@@ -52,37 +52,27 @@ class Creature(pygame.sprite.Sprite):
         self.image = self.img_list[direction][status]
         self.flush_and_get_creature_rect()
 
-    def detect_creature_rounding(self, loc_set: set, the_player: 'Creature'):
+    def detect_player_rounding(self, the_player: 'Creature'):
         """
-        用来侦查周围十字区域有没有生物，以及玩家的位置
-        :param loc_set: 当前轮的生物位置集合
+        用来侦查周围十字区域有没有玩家，以及玩家的位置
         :param the_player: 玩家
         :return: 返回一个bool列表，0上方，1下方，2左方，3右方，以及一个整数，-1表示没有玩家，0表示上方有玩家，以此类推
         """
         loc = self.loc
-        rounding_list = [False, False, False, False]
-        rounding_player = 0
+        rounding_player = -1
         loc_0 = [loc[0] - 1, loc[1]]
         loc_1 = [loc[0] + 1, loc[1]]
         loc_2 = [loc[0], loc[1] - 1]
         loc_3 = [loc[0], loc[1] + 1]
-        if loc_0 in loc_set:
-            rounding_list[0] = True
-            if loc_0 == the_player.loc:
-                rounding_player = 0
-        if loc_1 in loc_set:
-            rounding_list[1] = True
-            if loc_1 == the_player.loc:
-                rounding_player = 1
-        if loc_2 in loc_set:
-            rounding_list[2] = True
-            if loc_2 == the_player.loc:
-                rounding_player = 2
-        if loc_3 in loc_set:
-            rounding_list[3] = True
-            if loc_3 == the_player.loc:
-                rounding_player = 3
-        return rounding_list, rounding_player
+        if loc_0 == the_player.loc:
+            rounding_player = 0
+        elif loc_1 == the_player.loc:
+            rounding_player = 1
+        elif loc_2 == the_player.loc:
+            rounding_player = 2
+        elif loc_3 == the_player.loc:
+            rounding_player = 3
+        return rounding_player
 
     def move(self, direction: int):
         """
@@ -149,7 +139,7 @@ class Creature(pygame.sprite.Sprite):
 
     def die(self):
         self.blood = 0
-        pass
+        self.living = False
 
     def been_attacked(self, creature: 'Creature', ):
         """
@@ -181,3 +171,11 @@ class Creature(pygame.sprite.Sprite):
             return (self.loc[0], self.loc[1] + 1)
         else:
             return (self.loc[0], self.loc[1] - 1)
+
+    def next_to(self, loc: list[int, int]):
+        d1 = loc[0] - self.loc[0]
+        d2 = loc[1] - self.loc[1]
+        if d1 ** 2 + d2 ** 2 == 1:
+            return True
+        else:
+            return False

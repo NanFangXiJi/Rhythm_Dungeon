@@ -56,6 +56,17 @@ def ToMap(MainScreen: pygame.Surface, map_index: int = Global_Variable.NEXT_MAP)
                 Global_Variable.MAIN_ATTACH[1][the_sq.obj_on.layer_for_obj].blit(the_sq.get_graphic(),
                                                                                  the_sq.square_rect)
 
+    #     处理层 2     #
+    heart_0 = pygame.image.load("img/pictures/heart_0.png")
+    heart_1 = pygame.image.load("img/pictures/heart_1.png")
+    heart_dest = heart_0.get_rect()
+    heart_dest.width = the_player.blood * heart_0.get_rect().width
+    heart_dest.left = Global_Variable.WINDOW_SIZE[0] - 20 - heart_dest.width
+    heart_dest.top = 500
+    tmp_sur = basic_func.get_empty_surface((heart_dest.width, heart_dest.height))
+    Global_Variable.MAIN_ATTACH[5].append(tmp_sur)
+    Global_Variable.MAIN_ATTACH_LOC[5].append(heart_dest)
+
     #     处理层 4     #
     # 加载遮罩
     sight_shadow = pygame.image.load("img/pictures/sight_shadow.png")
@@ -126,6 +137,10 @@ def ToMap(MainScreen: pygame.Surface, map_index: int = Global_Variable.NEXT_MAP)
                             ToMap_RC.outside_data_list[5].pop((the_player.loc[0] - 1, the_player.loc[1]))
                     else:
                         the_player.turn_down()
+                        if ToMap_RC.outside_data_list[5].get((the_player.loc[0], the_player.loc[1])) is not None:
+                            cre = ToMap_RC.outside_data_list[5].get((the_player.loc[0], the_player.loc[1]))
+                            cre: Monster.Monster
+                            cre.been_attacked(the_player)
                 elif event.key == pygame.K_UP:
                     if basic_func.is_it_accessible(the_map, the_player, 0, ToMap_RC.outside_data_list[5]):
                         the_player.move_up()
@@ -133,6 +148,10 @@ def ToMap(MainScreen: pygame.Surface, map_index: int = Global_Variable.NEXT_MAP)
                             ToMap_RC.outside_data_list[5].pop((the_player.loc[0] + 1, the_player.loc[1]))
                     else:
                         the_player.turn_up()
+                        if ToMap_RC.outside_data_list[5].get((the_player.loc[0] - 1, the_player.loc[1])) is not None:
+                            cre = ToMap_RC.outside_data_list[5].get((the_player.loc[0] - 1, the_player.loc[1]))
+                            cre: Monster.Monster
+                            cre.been_attacked(the_player)
                 elif event.key == pygame.K_LEFT:
                     if basic_func.is_it_accessible(the_map, the_player, 2, ToMap_RC.outside_data_list[5]):
                         the_player.move_left()
@@ -140,6 +159,10 @@ def ToMap(MainScreen: pygame.Surface, map_index: int = Global_Variable.NEXT_MAP)
                             ToMap_RC.outside_data_list[5].pop((the_player.loc[0], the_player.loc[1] + 1))
                     else:
                         the_player.turn_left()
+                        if ToMap_RC.outside_data_list[5].get((the_player.loc[0], the_player.loc[1] - 1)) is not None:
+                            cre = ToMap_RC.outside_data_list[5].get((the_player.loc[0], the_player.loc[1] - 1))
+                            cre: Monster.Monster
+                            cre.been_attacked(the_player)
                 elif event.key == pygame.K_RIGHT:
                     if basic_func.is_it_accessible(the_map, the_player, 3, ToMap_RC.outside_data_list[5]):
                         the_player.move_right()
@@ -147,6 +170,18 @@ def ToMap(MainScreen: pygame.Surface, map_index: int = Global_Variable.NEXT_MAP)
                             ToMap_RC.outside_data_list[5].pop(the_player.get_last_loc())
                     else:
                         the_player.turn_right()
+                        if ToMap_RC.outside_data_list[5].get((the_player.loc[0], the_player.loc[1] + 1)) is not None:
+                            cre = ToMap_RC.outside_data_list[5].get((the_player.loc[0], the_player.loc[1] + 1))
+                            cre: Monster.Monster
+                            cre.been_attacked(the_player)
+
+        # 更新生物集合与字典
+        for cre in the_map.map_Creature.copy():
+            if not cre.living:
+                the_map.map_Creature.discard(cre)
+                ToMap_RC.outside_data_list[5].pop(cre.loc[0], cre.loc[1])
+        if not the_player.living:
+            ToMap_RC.outside_data_list[3] = True
 
         # 处理怪物的移动
         if ToMap_RC.outside_data_list[6]:
@@ -154,13 +189,37 @@ def ToMap(MainScreen: pygame.Surface, map_index: int = Global_Variable.NEXT_MAP)
                 if type(mon) is Monster.Monster and ToMap_RC.outside_data_list[4] % mon.act_gap == 0:
                     mon: Monster.Monster
                     if mon.act_mode == 0:
-                        if basic_func.is_it_accessible(the_map, mon, mon.act_loop[mon.act_stage], ToMap_RC.outside_data_list[5]):
+                        if mon.next_to(the_player.loc):
+                            mon.do_attack(the_player)
+                            mon.turn(mon.detect_player_rounding(the_player))
+                        elif basic_func.is_it_accessible(the_map, mon, mon.act_loop[mon.act_stage], ToMap_RC.outside_data_list[5]):
                             mon.move(mon.act_loop[mon.act_stage])
                             mon.act_stage_change()
                             ToMap_RC.outside_data_list[5][(mon.loc[0], mon.loc[1])] = \
                                 ToMap_RC.outside_data_list[5].pop(mon.get_last_loc())
                         else:
                             mon.turn(mon.act_stage)
+
+        # 红心闪烁
+        if not ToMap_RC.is_it_same(2) and ToMap_RC.outside_data_list[2]:
+            Global_Variable.MAIN_ATTACH[5][0].fill((0, 0, 0, 255))
+            if the_player.blood > 0:
+                heart_dest = heart_0.get_rect()
+                heart_dest.width = the_player.blood * heart_0.get_rect().width
+                heart_dest.left = Global_Variable.WINDOW_SIZE[0] - 20 - heart_dest.width
+                heart_dest.top = 10
+                tmp_sur = basic_func.get_empty_surface((heart_dest.width, heart_dest.height))
+                for i in range(the_player.blood):
+                    tmp_dest = heart_0.get_rect()
+                    tmp_dest.left = i * heart_0.get_rect().width
+                    tmp_dest.top = 0
+                    if ToMap_RC.outside_data_list[4] % 2 == 0:
+                        tmp_sur.blit(heart_0, tmp_dest)
+                    else:
+                        tmp_sur.blit(heart_1, tmp_dest)
+                Global_Variable.MAIN_ATTACH[5][0] = tmp_sur
+                Global_Variable.MAIN_ATTACH_LOC[5][0] = heart_dest
+
 
         # 加载方格并绘制玩家和怪物
         for i in range(len(Global_Variable.MAIN_ATTACH[1])):
@@ -185,3 +244,8 @@ def ToMap(MainScreen: pygame.Surface, map_index: int = Global_Variable.NEXT_MAP)
 
         # 更新RC
         ToMap_RC.update_data()
+        if ToMap_RC.outside_data_list[3]:
+            break
+    Global_Variable.music_channel[0].stop()
+    basic_func.init_global_generation()
+    Global_Variable.NEXT_PAGE = 0
