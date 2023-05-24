@@ -40,6 +40,7 @@ def ToMap(MainScreen: pygame.Surface, map_index: int = Global_Variable.NEXT_MAP)
 
     # 初始化玩家
     the_player = Player.Player(player_loc)
+    the_map.map_Creature.add(the_player)
 
     #     处理层 1     #
     # 初始化地图层的下属Surface列表
@@ -77,10 +78,13 @@ def ToMap(MainScreen: pygame.Surface, map_index: int = Global_Variable.NEXT_MAP)
         1：game_time游戏总时间
         2：on_beat是否在拍子上
         3.end_of_map是否结束
-        4.拍数
+        4.beat_index拍数
+        5.cre_loc_set生物位置集合
     """
-    ToMap_RC = RC.Round_Controller(0, 0, False, False, 0)
-
+    ToMap_RC = RC.Round_Controller(0, 0, False, False, 0, set())
+    ToMap_RC.init_dict_for_data_list = {
+        5: set()
+    }
 
     while True:
         # RC轮初始操作

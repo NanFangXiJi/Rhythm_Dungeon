@@ -7,7 +7,7 @@ class Round_Controller:
     """
     __inside_data_list: list  # 储存旧版循环数据，0号元素默认为循环次数，私有
     outside_data_list: list  # 储存可修改的循环数据，0号元素默认为循环次数，公共
-    __init_dict_for_data_list: dict  # out_side_data_list的初始化字典
+    init_dict_for_data_list: dict  # out_side_data_list的初始化字典
 
     def __init__(self, *args):
         if len(args) == 0:
@@ -19,15 +19,14 @@ class Round_Controller:
             for ele in args:
                 self.__inside_data_list.append(ele)
                 self.outside_data_list.append(ele)
-        self.__init_dict_for_data_list = dict()
+        self.init_dict_for_data_list = dict()
 
     def round_init(self):
         """
         每轮开始时用于初始化需要初始化的数据
-        :return:
         """
-        if len(self.__init_dict_for_data_list) > 0:
-            for key, val in self.__init_dict_for_data_list:
+        if len(self.init_dict_for_data_list) > 0:
+            for key, val in self.init_dict_for_data_list:
                 self.outside_data_list[key] = val
 
     def is_it_same(self, data_index: int):

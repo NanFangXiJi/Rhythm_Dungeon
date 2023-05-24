@@ -6,6 +6,7 @@ class Creature(pygame.sprite.Sprite):
     这是生物抽象基类
     """
     loc: list[int, int]  # 位置
+    is_moving: bool  # 判断自身是否正在移动
     max_blood: int  # 最大血量
     blood: int  # 现有血量
     attack: int  # 攻击力
@@ -43,15 +44,52 @@ class Creature(pygame.sprite.Sprite):
         self.creature_rect.left = 50 * self.loc[1] + 25 - self.image.get_rect().width / 2
         return self.creature_rect
 
+    def detect_creature_rounding(self, loc_set: set, the_player: 'Creature'):
+        """
+        用来侦查周围十字区域有没有生物，以及玩家的位置
+        :param loc_set: 当前轮的生物位置集合
+        :param the_player: 玩家
+        :return: 返回一个bool列表，0上方，1下方，2左方，3右方，以及一个整数，-1表示没有玩家，0表示上方有玩家，以此类推
+        """
+        loc = self.loc
+        rounding_list = [False, False, False, False]
+        rounding_player = 0
+        loc_0 = [loc[0] - 1, loc[1]]
+        loc_1 = [loc[0] + 1, loc[1]]
+        loc_2 = [loc[0], loc[1] - 1]
+        loc_3 = [loc[0], loc[1] + 1]
+        if loc_0 in loc_set:
+            rounding_list[0] = True
+            if loc_0 == the_player.loc:
+                rounding_player = 0
+        if loc_1 in loc_set:
+            rounding_list[1] = True
+            if loc_1 == the_player.loc:
+                rounding_player = 1
+        if loc_2 in loc_set:
+            rounding_list[2] = True
+            if loc_2 == the_player.loc:
+                rounding_player = 2
+        if loc_3 in loc_set:
+            rounding_list[3] = True
+            if loc_3 == the_player.loc:
+                rounding_player = 3
+        return rounding_list, rounding_player
+
     def move(self, direction: int):
         """
-
-        未完成
-
         控制运动的函数
         :param direction: 方向，0上，1下，2左，3右
         :return:
         """
+        if direction == 0:
+            self.move_up()
+        elif direction == 1:
+            self.move_down()
+        elif direction == 2:
+            self.move_left()
+        elif direction == 3:
+            self.move_right()
 
     def move_up(self):
         self.loc[0] -= 1
@@ -91,7 +129,7 @@ class Creature(pygame.sprite.Sprite):
     def die(self):
         pass
 
-    def been_attacked(self, creature: pygame.sprite):
+    def been_attacked(self, creature: 'Creature'):
         """
         被攻击处理
         :param creature: 施加攻击的生物
@@ -100,7 +138,7 @@ class Creature(pygame.sprite.Sprite):
         if self.blood <= 0:
             self.die()
 
-    def do_attack(self, creature: pygame.sprite):
+    def do_attack(self, creature: 'Creature'):
         """
         攻击处理
         :param creature:遭受攻击的生物

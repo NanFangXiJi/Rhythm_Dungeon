@@ -2,6 +2,7 @@ import pygame.mixer
 from typing import Union
 
 import Square
+import Creature
 
 
 class maps:
@@ -10,7 +11,9 @@ class maps:
 
     map_size: tuple[int, int]  # 一个二元元组，确定maps有几行几列
     map_dest: tuple[int, int]  # 一个二元元组，确定maps的像素大小
+
     map_Square: list[list[Square.Square]]  # 一个二维数组，维护地图所有的方格，位置表示为几行几列
+    map_Creature: set[Creature.Creature]  # 一个集合，维护所有地图上的生物
 
     player_init_loc: tuple[int, int]  # 一个二元数组，确定玩家的初始位置
 
@@ -29,6 +32,8 @@ class maps:
         """
         # 初始化地图编号
         self.map_index = index
+        # 初始化生物集合
+        self.map_Creature = set()
         # 读文件
         map_file_list = self.read_map_file()
         # 初始化地图名、地图大小、地图方格、地图音乐路径、地图音乐对应BPM等
@@ -57,6 +62,12 @@ class maps:
         """
         with open('maps/' + str(self.map_index) + '.txt', 'r', encoding='utf-8') as f:
             return f.readlines()
+
+    def get_creature_loc_set(self):
+        loc_set = set()
+        for cre in self.map_Creature:
+            loc_set.add(cre.loc)
+        return loc_set
 
     def get_size(self):
         return self.map_size
