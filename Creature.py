@@ -88,7 +88,6 @@ class Creature(pygame.sprite.Sprite):
         """
         控制运动的函数
         :param direction: 方向，0上，1下，2左，3右
-        :return:
         """
         if direction == 0:
             self.move_up()
@@ -115,6 +114,20 @@ class Creature(pygame.sprite.Sprite):
         self.loc[1] += 1
         self.turn_right()
 
+    def turn(self, direction: int):
+        """
+                控制转向的函数
+                :param direction: 方向，0上，1下，2左，3右
+                """
+        if direction == 0:
+            self.turn_up()
+        elif direction == 1:
+            self.turn_down()
+        elif direction == 2:
+            self.turn_left()
+        elif direction == 3:
+            self.turn_right()
+
     def turn_up(self):
         self.direction = 0
         self.image = self.img_list[0][self.status]
@@ -138,7 +151,7 @@ class Creature(pygame.sprite.Sprite):
         self.blood = 0
         pass
 
-    def been_attacked(self, creature: 'Creature',):
+    def been_attacked(self, creature: 'Creature', ):
         """
         被攻击处理
         :param creature: 施加攻击的生物
@@ -154,3 +167,17 @@ class Creature(pygame.sprite.Sprite):
         :param creature:遭受攻击的生物
         """
         creature.been_attacked(self)
+
+    def get_last_loc(self):
+        """
+        获得移动前的位置
+        :return:
+        """
+        if self.direction == 0:
+            return (self.loc[0] + 1, self.loc[1])
+        elif self.direction == 1:
+            return (self.loc[0] - 1, self.loc[1])
+        elif self.direction == 2:
+            return (self.loc[0], self.loc[1] + 1)
+        else:
+            return (self.loc[0], self.loc[1] - 1)

@@ -77,23 +77,29 @@ def get_empty_surface(dest: tuple[int, int]):
 #     运算部分     #
 
 # 判断行动是否能够进行
-def is_it_accessible(the_map: Maps.maps, creature: Creature.Creature, direction: int):
+def is_it_accessible(the_map: Maps.maps, creature: Creature.Creature, direction: int, cre_dict: dict):
     """
     判断能不能进行行动
     :param the_map: 地图本身
     :param creature: 行动生物
     :param direction: 行动方向
+    :param cre_dict: 生物位置字典
     :return: bool量
     """
     cre_loc = creature.loc
+    print()
     if direction == 0:
-        return the_map.map_Square[cre_loc[0] - 1][cre_loc[1]].obj_on.accessible == 1
+        return the_map.map_Square[cre_loc[0] - 1][cre_loc[1]].obj_on.accessible\
+            and not (cre_loc[0] - 1, cre_loc[1]) in cre_dict.keys()
     elif direction == 1:
-        return the_map.map_Square[cre_loc[0] + 1][cre_loc[1]].obj_on.accessible == 1
+        return the_map.map_Square[cre_loc[0] + 1][cre_loc[1]].obj_on.accessible\
+            and not (cre_loc[0] + 1, cre_loc[1]) in cre_dict.keys()
     elif direction == 2:
-        return the_map.map_Square[cre_loc[0]][cre_loc[1] - 1].obj_on.accessible == 1
+        return the_map.map_Square[cre_loc[0]][cre_loc[1] - 1].obj_on.accessible\
+            and not (cre_loc[0], cre_loc[1] - 1) in cre_dict.keys()
     elif direction == 3:
-        return the_map.map_Square[cre_loc[0]][cre_loc[1] + 1].obj_on.accessible == 1
+        return the_map.map_Square[cre_loc[0]][cre_loc[1] + 1].obj_on.accessible\
+            and not (cre_loc[0], cre_loc[1] + 1) in cre_dict.keys()
 
 
 # 计算闪烁透明度

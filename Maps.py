@@ -67,6 +67,14 @@ class maps:
             self.map_Creature.add(mon)
         del temp_list
 
+    def is_this_loc_accessible(self, loc: list[int, int], loc_dict: dict):
+        if not self.map_Square[loc[0]][loc[1]].obj_on.accessible:
+            return False
+        elif loc in loc_dict.keys():
+            return False
+        else:
+            return True
+
     def read_map_file(self):
         """
         读取地图文件的信息
