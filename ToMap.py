@@ -77,8 +77,9 @@ def ToMap(MainScreen: pygame.Surface, map_index: int = Global_Variable.NEXT_MAP)
         1：game_time游戏总时间
         2：on_beat是否在拍子上
         3.end_of_map是否结束
+        4.拍数
     """
-    ToMap_RC = RC.Round_Controller(0, 0, False, False)
+    ToMap_RC = RC.Round_Controller(0, 0, False, False, 0)
 
 
     while True:
@@ -92,6 +93,10 @@ def ToMap(MainScreen: pygame.Surface, map_index: int = Global_Variable.NEXT_MAP)
 
         # 判断是否在拍子上
         ToMap_RC.outside_data_list[2] = the_map.is_on_beat(ToMap_RC.outside_data_list[1] + the_map.map_music_fin)
+
+        # 处理拍数
+        if ToMap_RC.outside_data_list[2] and not ToMap_RC.is_it_same(2):
+            ToMap_RC.outside_data_list[4] += 1
 
         # 按键操作
         for event in pygame.event.get():
