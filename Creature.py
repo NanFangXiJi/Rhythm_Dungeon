@@ -6,6 +6,9 @@ class Creature(pygame.sprite.Sprite):
     这是生物抽象基类
     """
     loc: list[int, int]  # 位置
+    max_blood: int  # 最大血量
+    blood: int  # 现有血量
+    attack: int  # 攻击力
     creature_rect: pygame.rect.Rect  # 生物的rect
     direction: int  # 面朝方向，0上，1下，2左，3右
     status: int  # 状态
@@ -81,3 +84,25 @@ class Creature(pygame.sprite.Sprite):
     def turn_right(self):
         self.direction = 3
         self.image = self.img_list[3][self.status]
+
+    def blood_turn_max(self):
+        self.blood = self.max_blood
+
+    def die(self):
+        pass
+
+    def been_attacked(self, creature: pygame.sprite):
+        """
+        被攻击处理
+        :param creature: 施加攻击的生物
+        """
+        self.blood -= creature.attack
+        if self.blood <= 0:
+            self.die()
+
+    def do_attack(self, creature: pygame.sprite):
+        """
+        攻击处理
+        :param creature:遭受攻击的生物
+        """
+        creature.been_attacked(self)

@@ -43,6 +43,12 @@ CHANNEL = 2
 # 全局音频通道
 music_channel: list[pygame.Channel] = list()
 
+# 玩家初始攻击力
+init_attack_of_player = 1
+
+# 玩家初始最大血量
+init_max_blood_of_player = 4
+
 
 #     变量区     #
 
