@@ -69,8 +69,8 @@ def menu(MainScreen: pygame.Surface):
     basic_func.gene_all_and_draw(MainScreen)
 
     # 播放背景音乐
-    mus = pygame.mixer.Sound("music/Sequel Blight.wav")
-    Global_Variable.music_channel[0].play(mus, loops=-1)
+    pygame.mixer.music.load("music/Sequel Blight.wav")
+    pygame.mixer.music.play(-1)
 
     selected_option = 0  # 当前选中的选择支
     end_of_menu = False  # 是否结束该阶段的bool值
@@ -147,7 +147,9 @@ def menu(MainScreen: pygame.Surface):
             break
 
     pygame.time.delay(100)
-    Global_Variable.music_channel[0].stop()
+    # Global_Variable.music_channel[0].stop()
+    pygame.mixer.music.stop()
+
     # 初始化生成
     basic_func.init_global_generation()
     # 设置下一个页面
