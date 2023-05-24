@@ -19,6 +19,7 @@ class Monster(Creature.Creature):
         self.mon_name = Global_Variable.monster_rule_list[mon_id][1]
         self.act_mode = Global_Variable.monster_rule_list[mon_id][2]
         self.max_blood = Global_Variable.monster_rule_list[mon_id][3]
+        self.blood = self.max_blood
         self.attack = Global_Variable.monster_rule_list[mon_id][18]
 
         # 转化字符串为列表
@@ -30,6 +31,7 @@ class Monster(Creature.Creature):
         cmt1_img_list = 0
         cmt2_img_list = 0
         img_filename_list = list()
+        self.img_list = [[], [], [], []]
         for i in range(6, 18):
             img_filename_list.append(Global_Variable.monster_rule_list[mon_id][i])
         for filename in img_filename_list:
@@ -37,13 +39,14 @@ class Monster(Creature.Creature):
             img = pygame.image.load(img_path)
 
             # img_list中二维列表储存
-            self.img_list[cmt2_img_list].append(pygame.image.load(img))
+            self.img_list[cmt2_img_list].append(img)
 
             # 处理索引
             if cmt1_img_list == 2:
                 cmt1_img_list = 0
                 cmt2_img_list += 1
-            cmt1_img_list += 1
+            else:
+                cmt1_img_list += 1
 
         self.act_loop_len = len(self.act_loop)
 

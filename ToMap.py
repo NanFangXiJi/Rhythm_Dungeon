@@ -95,6 +95,10 @@ def ToMap(MainScreen: pygame.Surface, map_index: int = Global_Variable.NEXT_MAP)
         round_time = map_clock.get_time()
         ToMap_RC.outside_data_list[1] += round_time
 
+        # 更新生物位置字典
+        for cre in the_map.map_Creature:
+            ToMap_RC.outside_data_list[5][(cre.loc[0], cre.loc[1])] = cre
+
         # 判断是否在拍子上
         ToMap_RC.outside_data_list[2] = the_map.is_on_beat(ToMap_RC.outside_data_list[1] + the_map.map_music_fin)
 
@@ -138,7 +142,7 @@ def ToMap(MainScreen: pygame.Surface, map_index: int = Global_Variable.NEXT_MAP)
                 if the_sq.get_graphic() is not None:
                     Global_Variable.MAIN_ATTACH[1][the_sq.obj_on.layer_for_obj].blit(the_sq.get_graphic(),
                                                                                      the_sq.square_rect)
-                    if (i, j) in ToMap_RC.outside_data_list[5].keys:
+                    if (i, j) in ToMap_RC.outside_data_list[5].keys():
                         temp_cre = ToMap_RC.outside_data_list[5][(i, j)]
                         temp_cre.flush_status(temp_cre.direction, temp_cre.status)
                         Global_Variable.MAIN_ATTACH[1][2].blit(temp_cre.img_list[temp_cre.direction][temp_cre.status],
