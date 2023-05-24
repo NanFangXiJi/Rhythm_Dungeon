@@ -83,11 +83,11 @@ class maps:
         with open('maps/' + str(self.map_index) + '_m.txt', 'r', encoding='utf-8') as f:
             return f.readlines()
 
-    def get_creature_loc_set(self):
-        loc_set = set()
+    def get_creature_loc_dict(self):
+        loc_dict = dict()
         for cre in self.map_Creature:
-            loc_set.add(cre.loc)
-        return loc_set
+            loc_dict[(cre.loc[0], cre.loc[1])] = cre
+        return loc_dict
 
     def get_size(self):
         return self.map_size

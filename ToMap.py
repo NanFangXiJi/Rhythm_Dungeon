@@ -79,11 +79,11 @@ def ToMap(MainScreen: pygame.Surface, map_index: int = Global_Variable.NEXT_MAP)
         2：on_beat是否在拍子上
         3.end_of_map是否结束
         4.beat_index拍数
-        5.cre_loc_set生物位置集合
+        5.cre_loc_dict生物位置字典 位置：生物
     """
-    ToMap_RC = RC.Round_Controller(0, 0, False, False, 0, set())
+    ToMap_RC = RC.Round_Controller(0, 0, False, False, 0, dict())
     ToMap_RC.init_dict_for_data_list = {
-        5: set()
+        5: dict()
     }
 
     while True:
@@ -138,6 +138,11 @@ def ToMap(MainScreen: pygame.Surface, map_index: int = Global_Variable.NEXT_MAP)
                 if the_sq.get_graphic() is not None:
                     Global_Variable.MAIN_ATTACH[1][the_sq.obj_on.layer_for_obj].blit(the_sq.get_graphic(),
                                                                                      the_sq.square_rect)
+                    if (i, j) in ToMap_RC.outside_data_list[5].keys:
+                        temp_cre = ToMap_RC.outside_data_list[5][(i, j)]
+                        temp_cre.flush_status(temp_cre.direction, temp_cre.status)
+                        Global_Variable.MAIN_ATTACH[1][2].blit(temp_cre.img_list[temp_cre.direction][temp_cre.status],
+                                                               temp_cre.creature_rect)
             if i == the_player.loc[0]:
                 the_player.flush_status(the_player.direction, the_player.status)
                 Global_Variable.MAIN_ATTACH[1][2].blit(the_player.img_list[the_player.direction][the_player.status],

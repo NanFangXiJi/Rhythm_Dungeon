@@ -1,5 +1,7 @@
 import pygame
 
+import Maps
+
 
 class Creature(pygame.sprite.Sprite):
     """
@@ -43,6 +45,12 @@ class Creature(pygame.sprite.Sprite):
         self.creature_rect.top = 50 * (self.loc[0] + 1) - 10 - self.image.get_rect().height
         self.creature_rect.left = 50 * self.loc[1] + 25 - self.image.get_rect().width / 2
         return self.creature_rect
+
+    def flush_status(self, direction, status):
+        self.direction = direction
+        self.status = status
+        self.image = self.img_list[direction][status]
+        self.flush_and_get_creature_rect()
 
     def detect_creature_rounding(self, loc_set: set, the_player: 'Creature'):
         """
@@ -126,17 +134,20 @@ class Creature(pygame.sprite.Sprite):
     def blood_turn_max(self):
         self.blood = self.max_blood
 
-    def die(self):
+    def die(self, the_map: Maps.maps):
+        self.blood = 0
+        the_map.map_Creature.pop(self)
         pass
 
-    def been_attacked(self, creature: 'Creature'):
+    def been_attacked(self, creature: 'Creature', the_map: Maps.maps):
         """
         被攻击处理
         :param creature: 施加攻击的生物
+        :param map: 对应map
         """
         self.blood -= creature.attack
         if self.blood <= 0:
-            self.die()
+            self.die(the_map)
 
     def do_attack(self, creature: 'Creature'):
         """

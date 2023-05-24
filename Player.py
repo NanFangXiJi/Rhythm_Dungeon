@@ -31,8 +31,3 @@ class Player(Creature.Creature):
         self.max_blood = Global_Variable.init_max_blood_of_player
         self.blood = self.max_blood
 
-    def flush_status(self, direction, status):
-        self.direction = direction
-        self.status = status
-        self.image = self.img_list[direction][status]
-        self.flush_and_get_creature_rect()

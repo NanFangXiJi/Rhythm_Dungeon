@@ -10,7 +10,7 @@ class Monster(Creature.Creature):
     act_loop_len: int  # 行动循环长
     base: bool  # 表示是否为基
 
-    def __init__(self,mon_id):
+    def __init__(self, mon_id):
         super().__init__()
         self.base = True
         self.mon_id = mon_id
