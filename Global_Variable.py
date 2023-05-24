@@ -3,6 +3,7 @@
 """
 import pygame
 
+import Monster
 import OBJ
 
 #     常量区     #
@@ -31,11 +32,17 @@ load_of_obj_rule = "data/obj_rule.xlsx"
 # obj的定义列表
 obj_rule_list = list()
 
-# 绘制方法列表
-graphics_draw_method_list = []
-
 # 储存全体obj的列表
 obj_list: list[OBJ.obj] = list()
+
+# monster_rule文件路径
+load_of_monster_rule = "data/monster_rule.xlsx"
+
+# monster的定义列表
+monster_rule_list = list()
+
+# 储存全体monster的列表
+monster_list: list[Monster.Monster] = list()
 
 # 音频通道个数
 CHANNEL = 2

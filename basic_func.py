@@ -85,6 +85,7 @@ def is_it_accessible(the_map: Maps.maps, creature: Creature.Creature, direction:
     elif direction == 3:
         return the_map.map_Square[cre_loc[0]][cre_loc[1] + 1].obj_on.accessible == 1
 
+
 # 计算闪烁透明度
 def calculate_alpha(round: int, this_round: int):
     """
@@ -228,3 +229,11 @@ def read_obj_rule():
     """
     obj_rule_file = pandas.read_excel(Global_Variable.load_of_obj_rule)
     Global_Variable.obj_rule_list = obj_rule_file.values.tolist()
+
+
+def read_monster_rule():
+    """
+    实现初始化怪物列表的读取，在最开始处进行
+    """
+    monster_rule_file = pandas.read_excel(Global_Variable.load_of_monster_rule)
+    Global_Variable.monster_rule_list = monster_rule_file.values.tolist()

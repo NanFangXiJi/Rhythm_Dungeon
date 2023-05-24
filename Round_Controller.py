@@ -26,7 +26,7 @@ class Round_Controller:
         每轮开始时用于初始化需要初始化的数据
         """
         if len(self.init_dict_for_data_list) > 0:
-            for key, val in self.init_dict_for_data_list:
+            for key, val in self.init_dict_for_data_list.items():
                 self.outside_data_list[key] = val
 
     def is_it_same(self, data_index: int):
