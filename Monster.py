@@ -26,17 +26,24 @@ class Monster(Creature.Creature):
         self.act_loop = [int(i) for i in str_act_loop.split(',')]
 
         # 读取绘制方法字符串，并load
-        cmt_img_list = 0
+        self.img_list = list()
+        cmt1_img_list = 0
+        cmt2_img_list = 0
         img_filename_list = list()
         for i in range(6,18):
             img_filename_list.append(Global_Variable.monster_rule_list[mon_id][i])
         for filename in img_filename_list:
             img_path = f"img/character/{filename}.png"
             img = pygame.image.load(img_path)
-            self.img_list[cmt_img_list].append(pygame.image.load(img))
-            if cmt_img_list == 2:
-                cmt_img_list = 0  # img_list中二维列表储存
-            cmt_img_list += 1
+
+            # img_list中二维列表储存
+            self.img_list[cmt2_img_list].append(pygame.image.load(img))
+
+            #处理索引
+            if cmt1_img_list == 2:
+                cmt1_img_list = 0
+                cmt2_img_list += 1
+            cmt1_img_list += 1
 
         self.act_loop_len = len(self.act_loop)
 
