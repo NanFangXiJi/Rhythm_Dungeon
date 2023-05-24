@@ -67,6 +67,14 @@ class maps:
             self.map_Creature.add(mon)
         del temp_list
 
+    def is_this_loc_accessible(self, loc: list[int, int], loc_dict: dict):
+        if not self.map_Square[loc[0]][loc[1]].obj_on.accessible:
+            return False
+        elif loc in loc_dict.keys():
+            return False
+        else:
+            return True
+
     def read_map_file(self):
         """
         读取地图文件的信息
@@ -83,11 +91,11 @@ class maps:
         with open('maps/' + str(self.map_index) + '_m.txt', 'r', encoding='utf-8') as f:
             return f.readlines()
 
-    def get_creature_loc_set(self):
-        loc_set = set()
+    def get_creature_loc_dict(self):
+        loc_dict = dict()
         for cre in self.map_Creature:
-            loc_set.add(cre.loc)
-        return loc_set
+            loc_dict[(cre.loc[0], cre.loc[1])] = cre
+        return loc_dict
 
     def get_size(self):
         return self.map_size
