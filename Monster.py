@@ -54,7 +54,6 @@ class Monster(Creature.Creature):
             else:
                 cmt1_img_list += 1
 
-
     def copy_base_in_list(self, init_loc: list[int, int], direction: int = 1, status: int = 1):
         """
 
@@ -75,4 +74,3 @@ class Monster(Creature.Creature):
             self.act_stage += 1
         else:
             self.act_stage = 0
-

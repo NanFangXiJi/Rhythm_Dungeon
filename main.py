@@ -7,6 +7,7 @@ import Global_Variable
 import Menu
 import Start_Process
 import ToMap
+import Game_Over
 
 
 # 初始化
@@ -39,3 +40,5 @@ while True:
         Menu.menu(MainScreen)
     elif Global_Variable.NEXT_PAGE == 2:
         ToMap.ToMap(MainScreen)
+    elif Global_Variable.NEXT_PAGE == 3:
+        Game_Over.Game_Over(MainScreen)

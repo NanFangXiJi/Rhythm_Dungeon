@@ -248,4 +248,4 @@ def ToMap(MainScreen: pygame.Surface, map_index: int = Global_Variable.NEXT_MAP)
             break
     Global_Variable.music_channel[0].stop()
     basic_func.init_global_generation()
-    Global_Variable.NEXT_PAGE = 0
+    Global_Variable.NEXT_PAGE = 3
