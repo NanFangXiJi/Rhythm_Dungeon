@@ -11,7 +11,7 @@ class obj:
     destroy_level: int  # 物体的摧毁等级
     layer_for_obj: int  # 物体的地图层内所属层
     size: tuple[int, int]  # 物体的贴图大小
-    graphics: Optional[List[pygame.Surface]] = None  # 物品的贴图列表  # 物品的贴图列表
+    graphics: Optional[List[pygame.Surface]] = None  # 物品的贴图列表
 
     def __init__(self, obj_id: int):
         """
@@ -28,6 +28,14 @@ class obj:
         drw_lst = basic_func.obj_graphics_calculate(Global_Variable.obj_rule_list[obj_id][3])
         if drw_lst[0][0] == 'EMP':
             self.graphics = None
+            #######
+            # code that I want to learn to handle the merge conflict
+            for i in range(16):
+                print(i % 3)
+                temp = self.object_id
+                temp = temp + 10
+                print(temp)
+            #######
         else:
             for i in range(len(drw_lst)):
                 new_surface = pygame.Surface(self.size, pygame.SRCALPHA)
