@@ -27,7 +27,10 @@ class obj:
         self.graphics = list()
         drw_lst = basic_func.obj_graphics_calculate(Global_Variable.obj_rule_list[obj_id][3])
         if drw_lst[0][0] == 'EMP':
-            self.graphics = None
+
+            # I made the conflict here
+            # self.graphics = None
+            self.graphics = self  # this is the odd question
             #######
             # code that I want to learn to handle the merge conflict
             for i in range(16):
@@ -36,6 +39,7 @@ class obj:
                 temp = temp + 10
                 print(temp)
             #######
+            
         else:
             for i in range(len(drw_lst)):
                 new_surface = pygame.Surface(self.size, pygame.SRCALPHA)
